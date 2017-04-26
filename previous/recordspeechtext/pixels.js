@@ -61,8 +61,6 @@ set(curPixel%width,curPixel/width,color(0));
   //   }
   // }
 
-
-
   curPixel += 4;
   if (curPixel >= pixels.length) {
     curPixel = 0;

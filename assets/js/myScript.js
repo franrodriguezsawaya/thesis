@@ -23,7 +23,7 @@ var fileCounter = 0;
 //variable for referencing mic
 var mic;
 //variable for rms amplitude value
-var rms;
+var rms = 0.0;
 //variable for audio analyzer
 var analyzer;
 
@@ -42,15 +42,15 @@ function setup() {
   pixelDensity(1);
 
 
-	console.log("activate mic but without start");
+  console.log("activate mic but without start");
   //retrieve mic from p5 library
   mic = new p5.AudioIn();
   //create new analyzer
   analyzer = new p5.Amplitude();
-	//connect the mic to the analyzer
-	analyzer.setInput(mic);
-	//maybe we dont need this start thingy
-	//mic.start();
+  //connect the mic to the analyzer
+  analyzer.setInput(mic);
+  //maybe we dont need this start thingy
+  //mic.start();
 
   //recognition callback
   myRec.onResult = parseResult;
@@ -60,7 +60,25 @@ function setup() {
 }
 
 function draw() {
-	console.log("this is the draw loop");
+  console.log("this is the draw loop");
+
+  rms = mic.getLevel();
+  console.log(rms);
+
+  if (rms < 0.02) {
+		console.log("lo");
+	} else {
+		console.log("hi");
+	}
+
+  //load pixels from the screen
+  loadPixels();
+
+
+
+
+  //update pixels on the screen
+  updatePixels();
 }
 
 //function called back by myRec when onResult
