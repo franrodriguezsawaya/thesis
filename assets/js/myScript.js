@@ -3,7 +3,7 @@
 //by fran rodriguez-sawaya
 
 //variable for storing current version
-var currentVersion = "v0.0.1";
+var currentVersion = "v0.0.2";
 
 //var for storing p5S.SpeechRec object
 var myRec = new p5.SpeechRec();
@@ -20,20 +20,43 @@ var isRecording = false;
 //variable for keeping count of text files generated
 var fileCounter = 0;
 
+//variable for referencing mic
+var mic;
+//variable for rms amplitude value
+var rms;
+//variable for audio analyzer
+var analyzer;
+
+//variable for current pixel
+var currentPixel = 0;
+
 //setup() function from p5.js library
 function setup() {
 
-	//console log the current version of my thesis
-	console.log(currentVersion);
+  //console log the current version of my thesis
+  console.log(currentVersion);
 
-  //setup without canvas and no loop
-  noCanvas();
-  noLoop();
+  //create canvas of 500 px wide and 700 px high
+  createCanvas(500, 700);
+  //pixel density for addressing retina display
+  pixelDensity(1);
+
+  //retrieve mic from p5 library
+  mic = new p5.AudioIn();
+  //create new analyzer
+  analyzer = new p5.Amplitude();
+	//connect the mic to the analyzer
+	analyzer.setInput(mic);
+	//mic.start();
 
   //recognition callback
   myRec.onResult = parseResult;
   //start engine
   myRec.start();
+
+	//setup without no loop
+	noLoop();
+
 }
 
 //function called back by myRec when onResult
@@ -59,18 +82,20 @@ function saveMySpeechToFile() {
 //add event listener to loading of page
 window.addEventListener("load", function() {
 
-	//retrieve start and stop buttons from site
+  //retrieve start and stop buttons from site
   var startBtn = document.getElementById("start");
-	var stopBtn = document.getElementById("stop");
+  var stopBtn = document.getElementById("stop");
 
-	//add event listener on click to start button
+  //add event listener on click to start button
   startBtn.addEventListener("click", function() {
-		//toggle the recording on
+    console.log("start recording");
+    //toggle the recording on
     isRecording = true;
   });
 
-	//add event listener on click to stop button
+  //add event listener on click to stop button
   stopBtn.addEventListener("click", function() {
+    console.log("stop recording");
     saveMySpeechToFile();
     mySpeech = "";
     isRecording = false;
