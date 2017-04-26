@@ -19,6 +19,12 @@ var isRecording = false;
 
 //variable for keeping count of text files generated
 var fileCounter = 0;
+//var for storing current moment
+var currentMoment = null;
+var previousMoment = null;
+//variable for step of time
+//it is measured in miliseconds
+var stepMoment = 1000;
 
 //variable for referencing mic
 var mic;
@@ -34,7 +40,7 @@ var spectrum = null;
 //variables for drawing ampltude and fft
 var xPositionamp = 50;
 var yPositionamp = 50;
-var flag = false;
+// var flag = false;
 var xPositionfft = 50;
 var yPositionfft = 100;
 
@@ -42,17 +48,11 @@ var yPositionfft = 100;
 var currentPixel = 0;
 
 //maybe include them?
-// var myRec = new p5.SpeechRec();
-// var analyzer;
-// var mic;
+
 // var button1amp;
 // var button2amp;
 // var button1fft;
 // var button2fft;
-// var xPosition;
-// var duration;
-// var mic2;
-
 
 //setup() function from p5.js library
 function setup() {
@@ -63,7 +63,7 @@ function setup() {
   //create canvas
   createCanvas(2000, 4000);
   //pixel density for addressing retina display
-  pixelDensity(1);
+  //pixelDensity(1);
   //white background
   background(255);
 
@@ -85,24 +85,46 @@ function setup() {
   //start engine
   myRec.start();
 
+  //initialize currentMoment and previousMoment
+  currentMoment = millis();
+  previousMoment = currentMoment
+
 }
 
 function draw() {
-  console.log("this is the draw loop");
 
-  //retrieve sound and update variables
-  rms = mic.getLevel();
-  spectrum = fft.analyze();
+  if (isRecording) {
+    console.log("this is the draw loop");
 
-  //load pixels from the screen
-  loadPixels();
+    //update currentMoment
+    currentMoment = millis();
+    //console.log(currentMoment);
 
-  //drawPauses();
-	updatePosition();
-	drawAmpFFT();
+    //retrieve sound and update variables
+    rms = mic.getLevel();
+    spectrum = fft.analyze();
 
-  //update pixels on the screen
-  updatePixels();
+    //draw the fft every one second
+    if (currentMoment - previousMoment > stepMoment) {
+      //draw the stuff
+      updatePosition();
+      drawAmpFFT();
+      //update previousMoment, catch up with currentMoment
+      previousMoment = currentMoment;
+    }
+
+    //load pixels from the screen
+    loadPixels();
+
+    //draw the pauses
+    drawPauses();
+
+
+
+    //update pixels on the screen
+    updatePixels();
+  }
+
 }
 
 //function called back by myRec when onResult
@@ -145,6 +167,7 @@ window.addEventListener("load", function() {
     saveMySpeechToFile();
     mySpeech = "";
     isRecording = false;
+
   });
 });
 
@@ -180,7 +203,7 @@ function updatePosition() {
 
 function drawAmpFFT() {
   for (var i = 0; i < rms; i++) { //Amplitude
-    fill(255, 0, 0 );
+    fill(255, 0, 0);
     stroke(155);
     // Draw an ellipse with size based on volume
     //rect(xPosition, yPosition, 10+rms*200, 10+rms*200);

@@ -19,6 +19,7 @@ function setup() {
   background(255, 255, 255);
   frameRate(1);
   //fill(0, 0, 0, 255);
+  pixelDensity(1);
 
   mic = new p5.AudioIn();
   analyzer = new p5.Amplitude(); // create a new Amplitude analyzer
@@ -119,27 +120,20 @@ function draw() {
     //triangle(h, w, h + 50, w + 50, h + 100, w + 100)
     // rect(xPositionamp,yPositionamp,w,h);
     ellipse(xPositionamp, yPositionamp, w, h);
-
-  } else {
-    // fill(255);
-    ellipse(xPositionamp, yPositionamp, w, h);
-    rect(1000, 1000, 0, 0);
-
   }
-}
 
-if (rms < 0.02) {
-  fill(0);
-  stroke(0);
-  rect(xPositionamp + 20, yPositionamp + 150, 40, 20);
-
-
-} else
-
-  fill(250);
-stroke(252);
-rect(xPositionamp + 20, yPositionamp + 150, 40, 20);
-}
+  // if (rms < 0.02) {
+  //   fill(0);
+  //   stroke(0);
+  //   rect(xPositionamp + 20, yPositionamp + 150, 40, 20);
+  //
+  //
+  // } else
+  //
+  //   fill(250);
+  // stroke(252);
+  // rect(xPositionamp + 20, yPositionamp + 150, 40, 20);
+  // }
 
 }
 
