@@ -42,15 +42,14 @@ function setup() {
   pixelDensity(1);
 
 
-  console.log("activate mic but without start");
+  console.log("activate mic and start it");
   //retrieve mic from p5 library
   mic = new p5.AudioIn();
   //create new analyzer
   analyzer = new p5.Amplitude();
   //connect the mic to the analyzer
   analyzer.setInput(mic);
-  //maybe we dont need this start thingy
-  //mic.start();
+  mic.start();
 
   //recognition callback
   myRec.onResult = parseResult;
