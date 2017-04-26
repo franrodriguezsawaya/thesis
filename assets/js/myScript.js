@@ -64,17 +64,21 @@ function draw() {
   rms = mic.getLevel();
   console.log(rms);
 
+	//load pixels from the screen
+	loadPixels();
+
   if (rms < 0.02) {
-		console.log("lo");
+		//console.log("lo");
+		set(currentPixel%width,currentPixel/width,color(0));
 	} else {
-		console.log("hi");
+		//console.log("hi");
+		set(currentPixel%width,currentPixel/width,color(255));
 	}
 
-  //load pixels from the screen
-  loadPixels();
-
-
-
+	currentPixel += 4;
+	if (currentPixel >= pixels.length) {
+		currentPixel = 0;
+	}
 
   //update pixels on the screen
   updatePixels();

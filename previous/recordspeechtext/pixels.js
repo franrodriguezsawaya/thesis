@@ -76,9 +76,6 @@ set(curPixel%width,curPixel/width,color(0));
 //   }
 // }
 
-
-
-
   updatePixels();
 
 //   //from voice.js
