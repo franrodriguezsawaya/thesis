@@ -26,9 +26,33 @@ var mic;
 var rms = 0.0;
 //variable for audio analyzer
 var analyzer;
+//variable for fft
+var fft;
+
+//variables for drawing ampltude and fft
+var xPositionamp = 50;
+var yPositionamp = 50;
+var flag = false;
+var xPositionfft = 50;
+var yPositionfft = 100;
 
 //variable for current pixel
 var currentPixel = 0;
+
+//maybe include them?
+// var myRec = new p5.SpeechRec();
+// var analyzer;
+// var mic;
+// var button1amp;
+// var button2amp;
+// var button1fft;
+// var button2fft;
+// var spectrum;
+// var xPosition;
+// var duration;
+// var flag;
+// var mic2;
+
 
 //setup() function from p5.js library
 function setup() {
@@ -40,7 +64,8 @@ function setup() {
   createCanvas(500, 700);
   //pixel density for addressing retina display
   pixelDensity(1);
-
+	//white background
+	background(255);
 
   console.log("activate mic and start it");
   //retrieve mic from p5 library
@@ -50,6 +75,10 @@ function setup() {
   //connect the mic to the analyzer
   analyzer.setInput(mic);
   mic.start();
+	//createa new fft
+	fft = new p5.FFT();
+	//connect the mic to the fft
+	fft.setInput(mic);
 
   //recognition callback
   myRec.onResult = parseResult;
