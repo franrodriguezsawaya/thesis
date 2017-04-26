@@ -3,7 +3,7 @@
 //by fran rodriguez-sawaya
 
 //variable for storing current version
-var currentVersion = "v0.0.2";
+var currentVersion = "v0.0.3";
 
 //var for storing p5S.SpeechRec object
 var myRec = new p5.SpeechRec();
@@ -41,6 +41,7 @@ function setup() {
   //pixel density for addressing retina display
   pixelDensity(1);
 
+	/*
   //retrieve mic from p5 library
   mic = new p5.AudioIn();
   //create new analyzer
@@ -48,6 +49,7 @@ function setup() {
 	//connect the mic to the analyzer
 	analyzer.setInput(mic);
 	//mic.start();
+	*/
 
   //recognition callback
   myRec.onResult = parseResult;
