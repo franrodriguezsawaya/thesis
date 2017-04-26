@@ -49,10 +49,8 @@ var currentPixel = 0;
 // var button2amp;
 // var button1fft;
 // var button2fft;
-// var spectrum;
 // var xPosition;
 // var duration;
-// var flag;
 // var mic2;
 
 
@@ -99,14 +97,9 @@ function draw() {
   //load pixels from the screen
   loadPixels();
 
-
   //drawPauses();
-
-
 	updatePosition();
 	drawAmpFFT();
-
-
 
   //update pixels on the screen
   updatePixels();
@@ -187,12 +180,12 @@ function updatePosition() {
 
 function drawAmpFFT() {
   for (var i = 0; i < rms; i++) { //Amplitude
-    fill(255);
+    fill(255, 0, 0 );
     stroke(155);
     // Draw an ellipse with size based on volume
     //rect(xPosition, yPosition, 10+rms*200, 10+rms*200);
     // quad(xPositionfft, yPositionfft, 10+rms*200, 10+rms*200);
-    fill(255);
+    fill(0, 0, 255);
     rect(xPositionfft, yPositionfft, 10 + rms * 200, 10 + rms * 200);
     // ellipse(xPosition, yPosition, w, h);
 
@@ -204,7 +197,7 @@ function drawAmpFFT() {
     // var hAlso = 50;
     // var wAlso = 150;
     // if(spectrum[i]< 10){
-    fill(255);
+    fill(0, 255, 0);
     // stroke(0);
     stroke('rgba(82, 167, 133, .5)');
     //triangle(h, w, h + 50, w + 50, h + 100, w + 100)
