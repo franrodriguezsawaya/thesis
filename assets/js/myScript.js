@@ -3,7 +3,7 @@
 //by fran rodriguez-sawaya
 
 //variable for storing current version
-var currentVersion = "v0.0.3";
+var currentVersion = "v0.0.4";
 
 //var for storing p5S.SpeechRec object
 var myRec = new p5.SpeechRec();
@@ -28,6 +28,8 @@ var rms = 0.0;
 var analyzer;
 //variable for fft
 var fft;
+//variable for spectrum
+var spectrum = null;
 
 //variables for drawing ampltude and fft
 var xPositionamp = 50;
@@ -60,12 +62,12 @@ function setup() {
   //console log the current version of my thesis
   console.log(currentVersion);
 
-  //create canvas of 500 px wide and 700 px high
-  createCanvas(500, 700);
+  //create canvas
+  createCanvas(2000, 4000);
   //pixel density for addressing retina display
   pixelDensity(1);
-	//white background
-	background(255);
+  //white background
+  background(255);
 
   console.log("activate mic and start it");
   //retrieve mic from p5 library
@@ -75,10 +77,10 @@ function setup() {
   //connect the mic to the analyzer
   analyzer.setInput(mic);
   mic.start();
-	//createa new fft
-	fft = new p5.FFT();
-	//connect the mic to the fft
-	fft.setInput(mic);
+  //createa new fft
+  fft = new p5.FFT();
+  //connect the mic to the fft
+  fft.setInput(mic);
 
   //recognition callback
   myRec.onResult = parseResult;
@@ -90,24 +92,17 @@ function setup() {
 function draw() {
   console.log("this is the draw loop");
 
+  //retrieve sound and update variables
   rms = mic.getLevel();
-  console.log(rms);
+  spectrum = fft.analyze();
 
-	//load pixels from the screen
-	loadPixels();
+  //load pixels from the screen
+  loadPixels();
 
-  if (rms < 0.02) {
-		//console.log("lo");
-		set(currentPixel%width,currentPixel/width,color(0));
-	} else {
-		//console.log("hi");
-		set(currentPixel%width,currentPixel/width,color(255));
-	}
 
-	currentPixel += 4;
-	if (currentPixel >= pixels.length) {
-		currentPixel = 0;
-	}
+  drawPauses();
+
+
 
   //update pixels on the screen
   updatePixels();
@@ -155,3 +150,62 @@ window.addEventListener("load", function() {
     isRecording = false;
   });
 });
+
+function drawPauses() {
+  if (rms < 0.02) {
+    //console.log("lo");
+    set(currentPixel % width, currentPixel / width, color(0));
+  } else {
+    //console.log("hi");
+    set(currentPixel % width, currentPixel / width, color(255));
+  }
+  currentPixel += 4;
+  if (currentPixel >= pixels.length) {
+    currentPixel = 0;
+  }
+}
+
+
+function updatePosition() {
+  if (xPositionamp < 1900) {
+    xPositionamp = xPositionamp + 80;
+  } else {
+    xPositionamp = 50;
+    yPositionamp = yPositionamp + 220;
+
+  }
+  if (xPositionfft < 1900) {
+    xPositionfft = xPositionfft + 80;
+  } else {
+    xPositionfft = 50;
+    yPositionfft = yPositionfft + 270;
+  }
+}
+
+function drawAmpFFT() {
+  for (var i = 0; i < rms; i++) { //Amplitude
+    fill(255);
+    stroke(155);
+    // Draw an ellipse with size based on volume
+    //rect(xPosition, yPosition, 10+rms*200, 10+rms*200);
+    // quad(xPositionfft, yPositionfft, 10+rms*200, 10+rms*200);
+    fill(255);
+    rect(xPositionfft, yPositionfft, 10 + rms * 200, 10 + rms * 200);
+    // ellipse(xPosition, yPosition, w, h);
+
+  }
+  for (var i = 0; i < spectrum.length; i++) { //FFT
+    //console.log(spectrum[i])
+    var h = map(spectrum[i], 0, 1024, 0, 300);
+    var w = map(spectrum[i], 0, 1024, 0, 300);
+    // var hAlso = 50;
+    // var wAlso = 150;
+    // if(spectrum[i]< 10){
+    fill(255);
+    // stroke(0);
+    stroke('rgba(82, 167, 133, .5)');
+    //triangle(h, w, h + 50, w + 50, h + 100, w + 100)
+    // rect(xPositionamp,yPositionamp,w,h);
+    ellipse(xPositionamp, yPositionamp, w, h);
+  }
+}
