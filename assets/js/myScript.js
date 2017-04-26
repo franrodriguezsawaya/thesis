@@ -1,7 +1,9 @@
 //thesis
 //nyu itp
 //by fran rodriguez-sawaya
-//v0.0.1
+
+//variable for storing current version
+var currentVersion = "v0.0.1";
 
 //var for storing p5S.SpeechRec object
 var myRec = new p5.SpeechRec();
@@ -20,6 +22,9 @@ var fileCounter = 0;
 
 //setup() function from p5.js library
 function setup() {
+
+	//console log the current version of my thesis
+	console.log(currentVersion);
 
   //setup without canvas and no loop
   noCanvas();
