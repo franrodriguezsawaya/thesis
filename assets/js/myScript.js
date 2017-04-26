@@ -49,18 +49,18 @@ function setup() {
   analyzer = new p5.Amplitude();
 	//connect the mic to the analyzer
 	analyzer.setInput(mic);
+	//maybe we dont need this start thingy
 	//mic.start();
-
-
 
   //recognition callback
   myRec.onResult = parseResult;
   //start engine
   myRec.start();
 
-	//setup without no loop
-	noLoop();
+}
 
+function draw() {
+	console.log("this is the draw loop");
 }
 
 //function called back by myRec when onResult
