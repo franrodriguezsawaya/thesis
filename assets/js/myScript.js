@@ -61,7 +61,7 @@ function setup() {
   console.log(currentVersion);
 
   //create canvas
-  createCanvas(2000, 4000);
+  createCanvas(1000, 800);
   //pixel density for addressing retina display
   //pixelDensity(1);
   //white background
@@ -119,8 +119,6 @@ function draw() {
     //draw the pauses
     drawPauses();
 
-
-
     //update pixels on the screen
     updatePixels();
   }
@@ -172,32 +170,39 @@ window.addEventListener("load", function() {
 });
 
 function drawPauses() {
-  if (rms < 0.02) {
-    //console.log("lo");
-    set(currentPixel % width, currentPixel / width, color(0));
-  } else {
-    //console.log("hi");
-    set(currentPixel % width, currentPixel / width, color(255));
+
+  //wrap up for just drawing on the right half of the canvas
+  if (currentPixel % width > width / 2) {
+    if (rms < 0.02) {
+      //console.log("lo");
+      set(currentPixel % width, currentPixel / width, color(0));
+    } else {
+      //console.log("hi");
+      set(currentPixel % width, currentPixel / width, color(255));
+    }
   }
   currentPixel += 4;
+
+  //wrap up of end of array
   if (currentPixel >= pixels.length) {
     currentPixel = 0;
   }
 }
 
 function updatePosition() {
-  if (xPositionamp < 1900) {
-    xPositionamp = xPositionamp + 80;
+  //
+  if (xPositionamp < width / 2) {
+    xPositionamp = xPositionamp + width / 20;
   } else {
-    xPositionamp = 50;
-    yPositionamp = yPositionamp + 220;
+    xPositionamp = width / 40;
+    yPositionamp = yPositionamp + height / 20;
 
   }
-  if (xPositionfft < 1900) {
-    xPositionfft = xPositionfft + 80;
+  if (xPositionfft < width / 2) {
+    xPositionfft = xPositionfft + width / 20;
   } else {
-    xPositionfft = 50;
-    yPositionfft = yPositionfft + 270;
+    xPositionfft = width / 40;
+    yPositionfft = yPositionfft + height / 20;
   }
 }
 
