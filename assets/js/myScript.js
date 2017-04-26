@@ -41,7 +41,8 @@ function setup() {
   //pixel density for addressing retina display
   pixelDensity(1);
 
-	/*
+
+	console.log("activate mic but without start");
   //retrieve mic from p5 library
   mic = new p5.AudioIn();
   //create new analyzer
@@ -49,7 +50,8 @@ function setup() {
 	//connect the mic to the analyzer
 	analyzer.setInput(mic);
 	//mic.start();
-	*/
+
+
 
   //recognition callback
   myRec.onResult = parseResult;
