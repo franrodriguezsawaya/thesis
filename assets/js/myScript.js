@@ -24,7 +24,7 @@ var currentMoment = null;
 var previousMoment = null;
 //variable for step of time
 //it is measured in miliseconds
-var stepMoment = 1000;
+var stepMoment = 100;
 
 //variable for referencing mic
 var mic;
@@ -105,7 +105,7 @@ function draw() {
     spectrum = fft.analyze();
 
     //draw the fft every one second
-    if (currentMoment - previousMoment > stepMoment) {
+    if (currentMoment - previousMoment > stepMoment &&  rms > 0.02) {
       //draw the stuff
       updatePosition();
       drawAmpFFT();
@@ -190,15 +190,13 @@ function drawPauses() {
 }
 
 function updatePosition() {
-  //
-  if (xPositionamp < width / 2) {
+  if (xPositionamp < width / 4) {
     xPositionamp = xPositionamp + width / 20;
   } else {
     xPositionamp = width / 40;
     yPositionamp = yPositionamp + height / 20;
-
   }
-  if (xPositionfft < width / 2) {
+  if (xPositionfft < width / 4) {
     xPositionfft = xPositionfft + width / 20;
   } else {
     xPositionfft = width / 40;
@@ -208,28 +206,45 @@ function updatePosition() {
 
 function drawAmpFFT() {
   for (var i = 0; i < rms; i++) { //Amplitude
-    fill(255, 0, 0);
+    fill(255);
     stroke(155);
     // Draw an ellipse with size based on volume
     //rect(xPosition, yPosition, 10+rms*200, 10+rms*200);
     // quad(xPositionfft, yPositionfft, 10+rms*200, 10+rms*200);
-    fill(0, 0, 255);
+    fill(255);
     rect(xPositionfft, yPositionfft, 10 + rms * 200, 10 + rms * 200);
     // ellipse(xPosition, yPosition, w, h);
 
   }
-  for (var i = 0; i < spectrum.length; i++) { //FFT
-    //console.log(spectrum[i])
-    var h = map(spectrum[i], 0, 1024, 0, 300);
-    var w = map(spectrum[i], 0, 1024, 0, 300);
-    // var hAlso = 50;
-    // var wAlso = 150;
-    // if(spectrum[i]< 10){
-    fill(0, 255, 0);
-    // stroke(0);
-    stroke('rgba(82, 167, 133, .5)');
-    //triangle(h, w, h + 50, w + 50, h + 100, w + 100)
-    // rect(xPositionamp,yPositionamp,w,h);
-    ellipse(xPositionamp, yPositionamp, w, h);
-  }
+
+  //circle according to fft centroid
+  // get the centroid
+  var spectralCentroid = fft.getCentroid();
+  //nyquist sampling rate
+  var nyquist = 22050;
+
+  // the mean_freq_index calculation is for the display.
+  var mean_freq_index = spectralCentroid / (nyquist / spectrum.length);
+  console.log("Hz: " + mean_freq_index);
+
+  var diameter = map(mean_freq_index, 20, 10000, 0, 300);
+  fill(255);
+  stroke(0);
+  ellipse(xPositionamp, yPositionamp, diameter, diameter);
+
+  // for (var i = 0; i < spectrum.length; i++) { //FFT
+//   //console.log(spectrum[i])
+//   var h = map(spectrum[i], 0, 1024, 0, 300);
+//   var w = map(spectrum[i], 0, 1024, 0, 300);
+//   // var hAlso = 50;
+//   // var wAlso = 150;
+//   // if(spectrum[i]< 10){
+//   fill(255);
+//   // stroke(0);
+//   //stroke('rgba(82, 167, 133, .5)');
+//   stroke(0);
+//   //triangle(h, w, h + 50, w + 50, h + 100, w + 100)
+//   // rect(xPositionamp,yPositionamp,w,h);
+//   ellipse(xPositionamp, yPositionamp, w, h);
+// }
 }
