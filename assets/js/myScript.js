@@ -100,7 +100,11 @@ function draw() {
   loadPixels();
 
 
-  drawPauses();
+  //drawPauses();
+
+
+	updatePosition();
+	drawAmpFFT();
 
 
 
@@ -164,7 +168,6 @@ function drawPauses() {
     currentPixel = 0;
   }
 }
-
 
 function updatePosition() {
   if (xPositionamp < 1900) {
