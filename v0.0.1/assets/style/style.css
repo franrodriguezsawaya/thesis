@@ -1,0 +1,20 @@
+#start{
+  height: 100px;
+  width: 200px;
+  /*position: relative;
+  top: 20px;
+  left: 20px;*/
+  background-color: #0099FF;
+  cursor: pointer;
+  line-height: 100px;
+  text-align: center;
+}
+
+#stop{
+  height: 100px;
+  width: 200px;
+  background-color: #FF9900;
+  cursor: pointer;
+  line-height: 100px;
+  text-align: center;
+}
